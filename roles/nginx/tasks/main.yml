@@ -1,0 +1,19 @@
+---
+# tasks file for nginx
+- name: Install Nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Create a simple index.html for testing
+  ansible.builtin.copy:
+    content: "<h1>Welcome to Web Server {{ ansible_hostname }}</h1>"
+    dest: /var/www/html/index.html
+    mode: '0644'
+
+- name: Start and enable Nginx service
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes

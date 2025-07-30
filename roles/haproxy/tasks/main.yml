@@ -1,0 +1,22 @@
+---
+# tasks file for haproxy
+- name: Install HAProxy
+  ansible.builtin.apt:
+    name: haproxy
+    state: present
+    update_cache: yes
+
+- name: Deploy HAProxy configuration file from template
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: '0644'
+  notify: Restart HAProxy
+
+- name: Start and enable HAProxy service
+  ansible.builtin.service:
+    name: haproxy
+    state: started
+    enabled: yes
+
+      # 핸들러를 위한 handlers/main.yml 파일도 만들어야 합니다.

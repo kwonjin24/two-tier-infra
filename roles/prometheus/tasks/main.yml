@@ -1,0 +1,30 @@
+---
+- name: Download and unpack prometheus
+  ansible.builtin.unarchive:
+    src: https://github.com/prometheus/prometheus/releases/download/v2.53.0/prometheus-2.53.0.linux-amd64.tar.gz
+    dest: /usr/local/bin/
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+
+- name: Deploy prometheus configuration
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /usr/local/bin/prometheus.yml
+
+- name: Create systemd service file for prometheus
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/prometheus.service
+    content: |
+      [Unit]
+      Description=Prometheus
+      [Service]
+      ExecStart=/usr/local/bin/prometheus --config.file=/usr/local/bin/prometheus.yml
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Enable and start prometheus service
+  ansible.builtin.systemd:
+    name: prometheus
+    daemon_reload: yes
+    state: started
+    enabled: yes

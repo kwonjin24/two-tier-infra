@@ -1,0 +1,33 @@
+# vi site.yml
+---
+- name: 1. Apply common configuration and monitoring agent to all servers
+  hosts: all
+  become: true
+  roles:
+    - common
+    - node_exporter
+
+- name: 2. Configure Database server
+  hosts: dbservers
+  become: true
+  roles:
+    - mariadb
+
+- name: 3. Configure Web servers
+  hosts: webservers
+  become: true
+  roles:
+    - nginx
+
+- name: 4. Configure Load Balancer
+  hosts: loadbalancer
+  become: true
+  roles:
+    - haproxy
+
+- name: 5. Configure Monitoring server
+  hosts: monitoring
+  become: true
+  roles:
+    - prometheus
+    - grafana

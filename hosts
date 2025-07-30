@@ -1,0 +1,12 @@
+[loadbalancer]
+an-ksh001 ansible_host=10.10.8.200 ansible_connection=local
+
+[webservers]
+an-ksh002 ansible_host=10.10.8.201
+an-ksh003 ansible_host=10.10.8.202
+
+[dbservers]
+an-ksh004 ansible_host=10.10.8.203
+
+[monitoring]
+an-ksh005 ansible_host=10.10.8.204
